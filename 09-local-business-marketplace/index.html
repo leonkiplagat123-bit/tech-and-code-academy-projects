@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Discover shops and services around your community with Jirani Market.">
+  <title>Jirani Market — Discover local businesses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="announcement"><span class="announcement-dot"></span> Shop local. Grow together. <span class="announcement-note">Made for your neighbourhood</span></div>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Jirani Market home"><span class="brand-mark">J</span><span>jirani<span class="brand-light">market</span></span></a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="#discover">Explore businesses</a><a href="#how-it-works">How it works</a></nav>
+    <button class="button button-dark header-cta" id="open-listing">+ List your business</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> YOUR COMMUNITY, CONNECTED</div>
+        <h1>Good things<br>are <em>closer</em> than<br>you think.</h1>
+        <p class="hero-description">Meet the independent shops, talented makers, and trusted services that make your neighbourhood special.</p>
+        <a class="button button-lime" href="#discover">Discover local businesses <span aria-hidden="true">↗</span></a>
+        <div class="hero-proof"><div class="avatar-stack"><span>JM</span><span>AK</span><span>WN</span><span>+</span></div><span><strong>Support your community</strong><br>Every local choice makes a difference.</span></div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of local shopping bags and storefronts">
+        <div class="art-sun"></div><div class="art-label">LOCAL IS<br>LOVELY <span>✳</span></div>
+        <div class="shopfront shopfront-back"><div class="shop-awning"></div><div class="shop-window"></div><div class="shop-door"></div></div>
+        <div class="shopfront shopfront-front"><div class="shop-awning"></div><div class="shop-window"></div><div class="shop-door"></div><div class="shop-sign">OPEN</div></div>
+        <div class="plant plant-one"><i></i><i></i><i></i><b></b></div><div class="plant plant-two"><i></i><i></i><i></i><b></b></div>
+        <div class="floating-tag tag-one">✳ GOOD PEOPLE</div><div class="floating-tag tag-two">MADE NEAR YOU ↗</div>
+        <div class="ground"></div>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Marketplace values"><div><span>✳</span> Discover hidden gems</div><div><span>↗</span> Support local owners</div><div><span>♡</span> Keep communities thriving</div></section>
+
+    <section class="discover section-wrap" id="discover">
+      <div class="section-heading"><div><div class="eyebrow">THE NEIGHBOURHOOD EDIT</div><h2>Find your kind<br>of <em>local.</em></h2></div><p>From your daily essentials to your next favourite spot, great local businesses are waiting to be found.</p></div>
+      <div class="search-panel">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search businesses, services, locations..." autocomplete="off"><kbd>/</kbd></label>
+        <label class="filter-label"><span>Category</span><select id="category-filter"><option value="all">All categories</option><option value="Food & Drink">Food &amp; Drink</option><option value="Fashion">Fashion</option><option value="Beauty & Wellness">Beauty &amp; Wellness</option><option value="Home Services">Home Services</option><option value="Electronics">Electronics</option><option value="Shopping">Shopping</option></select></label>
+        <label class="filter-label sort-filter"><span>Sort by</span><select id="sort-filter"><option value="featured">Featured</option><option value="name">Name A–Z</option><option value="price">Price: low to high</option></select></label>
+      </div>
+      <div class="results-bar"><p id="results-count" aria-live="polite">Showing local favourites</p><button id="favorites-toggle" class="text-button" aria-pressed="false">♡ <span>Show saved</span></button></div>
+      <div id="business-grid" class="business-grid" aria-live="polite"></div>
+      <div id="empty-state" class="empty-state" hidden><span>⌕</span><h3>No businesses found</h3><p>Try another search or change your filters.</p><button class="button button-dark" id="reset-filters">Clear filters</button></div>
+    </section>
+
+    <section class="owner-banner section-wrap" id="how-it-works">
+      <div class="owner-symbol">↗</div><div><div class="eyebrow">ARE YOU A LOCAL OWNER?</div><h2>Your business belongs <em>here.</em></h2><p>Help your neighbours discover what you do. Add your business to our growing community directory.</p></div><button class="button button-lime" id="open-listing-bottom">Add your business <span>↗</span></button>
+    </section>
+    <section class="how-section section-wrap"><div class="eyebrow">SMALL STEPS, BIG IMPACT</div><h2>Local love, made <em>easy.</em></h2><div class="steps"><article><span>01</span><h3>Explore</h3><p>Search for businesses and services near you.</p></article><article><span>02</span><h3>Connect</h3><p>Find contact details and reach out directly.</p></article><article><span>03</span><h3>Support</h3><p>Choose local and help your community thrive.</p></article></div></section>
+  </main>
+
+  <footer class="site-footer"><a class="brand" href="#"><span class="brand-mark">J</span><span>jirani<span class="brand-light">market</span></span></a><p>Good neighbours. Great local finds.</p><span>© <span id="year"></span> Jirani Market · Educational demo</span></footer>
+
+  <dialog id="listing-dialog" class="listing-dialog">
+    <form id="listing-form" class="listing-form">
+      <div class="dialog-top"><div><div class="eyebrow">JOIN THE NEIGHBOURHOOD</div><h2>List your <em>business.</em></h2></div><button type="button" class="icon-button" id="close-dialog" aria-label="Close form">×</button></div>
+      <p class="form-intro">Share the basics so people can discover what you do. This demo saves the listing only in this browser.</p>
+      <label>Business name<input name="name" required maxlength="70" placeholder="e.g. Amina's Fresh Bakes"></label>
+      <div class="form-row"><label>Category<select name="category" required><option value="">Choose category</option><option>Food &amp; Drink</option><option>Fashion</option><option>Beauty &amp; Wellness</option><option>Home Services</option><option>Electronics</option><option>Shopping</option></select></label><label>Location<input name="location" required maxlength="70" placeholder="e.g. Mombasa"></label></div>
+      <div class="form-row"><label>Typical price (KSh)<input name="price" type="number" min="0" step="1" placeholder="e.g. 500"></label><label>Phone / WhatsApp<input name="phone" type="tel" maxlength="20" placeholder="+254 7xx xxx xxx"></label></div>
+      <label>Short description<textarea name="description" required maxlength="180" rows="3" placeholder="What makes your business special?"></textarea></label>
+      <label>Emoji for your listing<input name="emoji" maxlength="4" placeholder="e.g. 🧁"></label>
+      <p class="form-error" id="form-error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="button button-outline" id="cancel-dialog">Cancel</button><button type="submit" class="button button-dark">Save listing <span>↗</span></button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
