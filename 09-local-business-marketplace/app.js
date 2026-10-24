@@ -271,6 +271,7 @@ document.querySelector("#reset-filters").addEventListener("click", () => {
   searchInput.value = "";
   categoryFilter.value = "all";
   sortFilter.value = "featured";
+  ratingFilter.value = "0";
   showFavoritesOnly = false;
   renderBusinesses();
 });
