@@ -6,7 +6,7 @@ on:
       - "10-jirani-delivery/**"
       - ".github/workflows/test-jirani-delivery.yml"
   push:
-    branches: [main]
+    branches: [main, feature/jirani-delivery-project-10]
     paths:
       - "10-jirani-delivery/**"
       - ".github/workflows/test-jirani-delivery.yml"
