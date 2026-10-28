@@ -15,6 +15,7 @@ const starterBusinesses = [
 const grid = document.querySelector("#business-grid");
 const searchInput = document.querySelector("#search-input");
 const categoryFilter = document.querySelector("#category-filter");
+const locationFilter = document.querySelector("#location-filter");
 const ratingFilter = document.querySelector("#rating-filter");
 const detailsDialog = document.querySelector("#details-dialog");
 const detailsContent = document.querySelector("#business-details");
@@ -104,9 +105,10 @@ function getVisibleBusinesses() {
     const searchable = [business.name, business.category, business.location, business.description].join(" ").toLocaleLowerCase();
     const matchesQuery = searchable.includes(query);
     const matchesCategory = categoryFilter.value === "all" || business.category === categoryFilter.value;
+    const matchesLocation = !locationFilter.value.trim() || String(business.location || "").toLocaleLowerCase().includes(locationFilter.value.trim().toLocaleLowerCase());
     const matchesFavorites = !showFavoritesOnly || favorites.includes(business.id);
     const matchesRating = ratingSummary(business.id).average >= Number(ratingFilter.value || 0);
-    return matchesQuery && matchesCategory && matchesFavorites && matchesRating;
+    return matchesQuery && matchesCategory && matchesLocation && matchesFavorites && matchesRating;
   });
 
   if (sortFilter.value === "name") {
@@ -234,6 +236,7 @@ form.addEventListener("submit", event => {
   saveListings();
   searchInput.value = "";
   categoryFilter.value = "all";
+  locationFilter.value = "";
   sortFilter.value = "featured";
   ratingFilter.value = "0";
   showFavoritesOnly = false;
@@ -259,6 +262,7 @@ grid.addEventListener("click", event => {
 });
 
 searchInput.addEventListener("input", renderBusinesses);
+locationFilter.addEventListener("input", renderBusinesses);
 ratingFilter.addEventListener("change", renderBusinesses);
 categoryFilter.addEventListener("change", renderBusinesses);
 sortFilter.addEventListener("change", renderBusinesses);
