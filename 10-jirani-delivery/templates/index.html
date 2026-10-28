@@ -59,6 +59,17 @@
         <div id="tracking-result" class="tracking-result" role="status" aria-live="polite"></div>
       </section>
     </section>
+    <section class="panel admin-panel section-wrap" id="admin">
+      <div class="panel-heading"><div><p class="eyebrow">DEMO ADMIN TOOLS</p><h2>Update an order</h2></div><span class="panel-icon">🧾</span></div>
+      <p class="muted">For local development only. Set <code>JIRANI_ADMIN_KEY</code> in the server environment and enter that key here. Never place an admin key in source code.</p>
+      <form id="admin-form" class="tracking-form admin-form">
+        <label>Order number<input name="order_id" type="number" min="1" required placeholder="Order number"></label>
+        <label>New status<select name="status" required><option>Pending</option><option>Confirmed</option><option>Preparing</option><option>Out for delivery</option><option>Delivered</option><option>Cancelled</option></select></label>
+        <label>Admin key<input name="admin_key" type="password" required autocomplete="off" placeholder="Server admin key"></label>
+        <button class="secondary-button" type="submit">Save order status</button>
+      </form>
+      <p id="admin-message" class="message" role="status"></p>
+    </section>
     <section class="bottom-banner section-wrap"><div><p class="eyebrow">LOCAL FLAVOUR, DELIVERED</p><h2>Your next favourite meal is just a few clicks away.</h2></div><a href="#menu" class="primary-link">Browse the menu →</a></section>
   </main>
   <footer><a class="brand footer-brand" href="/"><span class="brand-mark">J</span><span>Jirani<span class="brand-light">Delivery</span></span></a><p>Built with care for local food lovers. <span>Educational demo · No real delivery service</span></p></footer>
