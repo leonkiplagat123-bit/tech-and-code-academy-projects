@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143b2a">
+  <meta name="description" content="Order tasty local meals with Jirani Delivery.">
+  <title>Jirani Delivery | Good food, close to home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Jirani Delivery home"><span class="brand-mark">J</span><span>Jirani<span class="brand-light">Delivery</span></span></a>
+    <nav aria-label="Main navigation"><a href="#menu">Explore menu</a><a href="#track">Track order</a></nav>
+    <a class="cart-link" href="#cart">Your basket <span id="cart-count">0</span></a>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">YOUR NEIGHBOURHOOD, DELIVERED</p>
+        <h1>Good food.<br><span>Good mood.</span></h1>
+        <p>Discover local favourites and get them delivered to your door.</p>
+        <a class="primary-link" href="#menu">Order something delicious <span aria-hidden="true">→</span></a>
+        <div class="hero-note"><span>✓</span> Simple ordering · Prices in KSh</div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="food-emoji">🍲</div><div class="floating-chip chip-one">Freshly made</div><div class="floating-chip chip-two">Made for your neighbourhood</div></div>
+    </section>
+    <section class="menu-section section-wrap" id="menu">
+      <div class="section-heading"><div><p class="eyebrow">MADE NEAR YOU</p><h2>What are you craving?</h2><p class="muted">Comfort food and local favourites, all in one place.</p></div><label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search meals..." aria-label="Search meals"></label></div>
+      <div class="filters" id="categories" aria-label="Filter by category"><button class="filter active" data-category="all" type="button">Everything</button></div>
+      <p id="menu-message" class="message" role="status"></p>
+      <div class="menu-grid" id="menu-grid" aria-live="polite"></div>
+    </section>
+    <section class="order-area section-wrap">
+      <section class="panel cart-panel" id="cart">
+        <div class="panel-heading"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2>Your basket</h2></div><span class="panel-icon">🧺</span></div>
+        <div id="cart-items" class="cart-items"><p class="muted">Your basket is empty. Add a favourite from the menu.</p></div>
+        <div class="totals"><div><span>Subtotal</span><strong id="subtotal">KSh 0</strong></div><div><span>Delivery</span><strong id="delivery">KSh 150</strong></div><div class="grand-total"><span>Total</span><strong id="total">KSh 150</strong></div></div>
+        <form id="checkout-form" class="checkout-form">
+          <h3>Delivery details</h3>
+          <label>Your name<input name="customer_name" required maxlength="100" autocomplete="name" placeholder="e.g. Amina"></label>
+          <label>Phone number<input name="phone" required maxlength="30" autocomplete="tel" placeholder="e.g. 0712 345 678"></label>
+          <label>Delivery address<input name="address" required maxlength="300" autocomplete="street-address" placeholder="Estate, street and house number"></label>
+          <label>Delivery notes <span class="optional">(optional)</span><textarea name="notes" maxlength="500" rows="2" placeholder="Landmark or special instructions"></textarea></label>
+          <button class="primary-button full-width" id="place-order" type="submit">Place order · <span id="checkout-total">KSh 150</span></button>
+          <p class="fine-print">Demo checkout only. No payment is collected.</p>
+        </form>
+        <p id="checkout-message" class="message" role="status"></p>
+      </section>
+      <section class="panel tracking-panel" id="track">
+        <div class="panel-heading"><div><p class="eyebrow">YOUR MEAL, YOUR WAY</p><h2>Track an order</h2></div><span class="panel-icon">🛵</span></div>
+        <p class="muted">Enter the order number and phone number you used at checkout.</p>
+        <form id="tracking-form" class="tracking-form">
+          <label>Order number<input name="order_id" type="number" required min="1" placeholder="e.g. 12"></label>
+          <label>Phone number<input name="phone" required maxlength="30" placeholder="Phone used at checkout"></label>
+          <button class="secondary-button" type="submit">Check status</button>
+        </form>
+        <div id="tracking-result" class="tracking-result" role="status" aria-live="polite"></div>
+      </section>
+    </section>
+    <section class="bottom-banner section-wrap"><div><p class="eyebrow">LOCAL FLAVOUR, DELIVERED</p><h2>Your next favourite meal is just a few clicks away.</h2></div><a href="#menu" class="primary-link">Browse the menu →</a></section>
+  </main>
+  <footer><a class="brand footer-brand" href="/"><span class="brand-mark">J</span><span>Jirani<span class="brand-light">Delivery</span></span></a><p>Built with care for local food lovers. <span>Educational demo · No real delivery service</span></p></footer>
+</body>
+</html>
