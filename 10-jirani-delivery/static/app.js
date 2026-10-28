@@ -128,6 +128,28 @@
     }
   });
 
+  $("#admin-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const message = $("#admin-message");
+    message.className = "message";
+    message.textContent = "Updating order status…";
+    try {
+      const orderId = encodeURIComponent(form.get("order_id"));
+      const data = await request(`/api/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: { "X-Admin-Key": form.get("admin_key") },
+        body: JSON.stringify({ status: form.get("status") })
+      });
+      message.className = "message success";
+      message.textContent = `Order #${data.order.id} updated to ${data.order.status}.`;
+      event.currentTarget.elements.admin_key.value = "";
+    } catch (error) {
+      message.className = "message error";
+      message.textContent = error.message;
+    }
+  });
+
   function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
   }
