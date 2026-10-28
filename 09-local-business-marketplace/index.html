@@ -45,7 +45,9 @@
       <div class="search-panel">
         <label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search businesses, services, locations..." autocomplete="off"><kbd>/</kbd></label>
         <label class="filter-label"><span>Category</span><select id="category-filter"><option value="all">All categories</option><option value="Food & Drink">Food &amp; Drink</option><option value="Fashion">Fashion</option><option value="Beauty & Wellness">Beauty &amp; Wellness</option><option value="Home Services">Home Services</option><option value="Electronics">Electronics</option><option value="Shopping">Shopping</option></select></label>
-        <label class="filter-label sort-filter"><span>Sort by</span><select id="sort-filter"><option value="featured">Featured</option><option value="name">Name A–Z</option><option value="price">Price: low to high</option></select></label>
+        <label class="filter-label location-filter"><span>Location</span><input id="location-filter" type="search" placeholder="Any location" aria-label="Filter businesses by location"></label>
+        <label class="filter-label sort-filter"><span>Sort by</span><select id="sort-filter"><option value="featured">Featured</option><option value="name">Name A–Z</option><option value="price">Price: low to high</option><option value="rating">Highest rated</option></select></label>
+        <label class="filter-label rating-filter"><span>Minimum rating</span><select id="rating-filter"><option value="0">Any rating</option><option value="3">3+ stars</option><option value="4">4+ stars</option><option value="4.5">4.5+ stars</option></select></label>
       </div>
       <div class="results-bar"><p id="results-count" aria-live="polite">Showing local favourites</p><button id="favorites-toggle" class="text-button" aria-pressed="false">♡ <span>Show saved</span></button></div>
       <div id="business-grid" class="business-grid" aria-live="polite"></div>
@@ -59,6 +61,8 @@
   </main>
 
   <footer class="site-footer"><a class="brand" href="#"><span class="brand-mark">J</span><span>jirani<span class="brand-light">market</span></span></a><p>Good neighbours. Great local finds.</p><span>© <span id="year"></span> Jirani Market · Educational demo</span></footer>
+
+  <dialog id="details-dialog" class="listing-dialog details-dialog" aria-labelledby="details-title"><div id="business-details" class="details-content"></div></dialog>
 
   <dialog id="listing-dialog" class="listing-dialog">
     <form id="listing-form" class="listing-form">

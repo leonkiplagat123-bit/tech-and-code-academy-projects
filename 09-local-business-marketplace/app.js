@@ -1,5 +1,7 @@
 const STORAGE_KEY = "jirani-marketplace-listings-v1";
 const FAVORITES_KEY = "jirani-marketplace-favorites-v1";
+const REVIEWS_KEY = "jirani-marketplace-reviews-v1";
+const demoReviews = { bakehouse: [{id:"demo-1",name:"A local customer",rating:5,text:"Lovely fresh pastries and friendly service.",date:"Demo review"},{id:"demo-2",name:"Neighbourhood foodie",rating:4,text:"Great morning stop. The sourdough is a favourite.",date:"Demo review"}], threaded:[{id:"demo-3",name:"A local customer",rating:5,text:"Beautiful pieces and thoughtful details.",date:"Demo review"}], roots:[{id:"demo-4",name:"A local customer",rating:4,text:"A calm place with helpful recommendations.",date:"Demo review"}], fixit:[], pixel:[], market:[] };
 
 const starterBusinesses = [
   { id: "bakehouse", name: "Maua Bakehouse", category: "Food & Drink", location: "Nyali, Mombasa", price: 350, emoji: "🥐", color: "#f0dfc9", description: "Fresh pastries, sourdough and a little morning magic.", phone: "+254711111111", featured: true },
@@ -13,6 +15,10 @@ const starterBusinesses = [
 const grid = document.querySelector("#business-grid");
 const searchInput = document.querySelector("#search-input");
 const categoryFilter = document.querySelector("#category-filter");
+const locationFilter = document.querySelector("#location-filter");
+const ratingFilter = document.querySelector("#rating-filter");
+const detailsDialog = document.querySelector("#details-dialog");
+const detailsContent = document.querySelector("#business-details");
 const sortFilter = document.querySelector("#sort-filter");
 const favoritesToggle = document.querySelector("#favorites-toggle");
 const resultsCount = document.querySelector("#results-count");
@@ -23,6 +29,7 @@ const toast = document.querySelector("#toast");
 
 let businesses = loadListings();
 let favorites = loadFavorites();
+let reviews = loadReviews();
 let showFavoritesOnly = false;
 let toastTimer;
 
@@ -35,6 +42,16 @@ function loadListings() {
     return starterBusinesses;
   }
 }
+
+function loadReviews() {
+  try { return JSON.parse(localStorage.getItem(REVIEWS_KEY) || "null") || JSON.parse(JSON.stringify(demoReviews)); }
+  catch (error) { return JSON.parse(JSON.stringify(demoReviews)); }
+}
+function saveReviews() { try { localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews)); } catch (error) { showToast("Could not save reviews in this browser."); } }
+function getReviews(id) { return Array.isArray(reviews[id]) ? reviews[id] : []; }
+function ratingSummary(id) { const list = getReviews(id); return { count: list.length, average: list.length ? list.reduce((sum, item) => sum + Number(item.rating || 0), 0) / list.length : 0 }; }
+function stars(value) { const n = Math.round(value); return "★".repeat(n) + "☆".repeat(5 - n); }
+function ratingMarkup(id) { const r = ratingSummary(id); return r.count ? '<span class="rating-stars" aria-label="' + r.average.toFixed(1) + ' out of 5 stars">' + stars(r.average) + '</span><span class="rating-number">' + r.average.toFixed(1) + '<span class="rating-count"> (' + r.count + ')</span></span>' : '<span class="no-rating">Not rated yet</span>'; }
 
 function loadFavorites() {
   try {
@@ -88,14 +105,18 @@ function getVisibleBusinesses() {
     const searchable = [business.name, business.category, business.location, business.description].join(" ").toLocaleLowerCase();
     const matchesQuery = searchable.includes(query);
     const matchesCategory = categoryFilter.value === "all" || business.category === categoryFilter.value;
+    const matchesLocation = !locationFilter.value.trim() || String(business.location || "").toLocaleLowerCase().includes(locationFilter.value.trim().toLocaleLowerCase());
     const matchesFavorites = !showFavoritesOnly || favorites.includes(business.id);
-    return matchesQuery && matchesCategory && matchesFavorites;
+    const matchesRating = ratingSummary(business.id).average >= Number(ratingFilter.value || 0);
+    return matchesQuery && matchesCategory && matchesLocation && matchesFavorites && matchesRating;
   });
 
   if (sortFilter.value === "name") {
     visible.sort((a, b) => a.name.localeCompare(b.name));
   } else if (sortFilter.value === "price") {
     visible.sort((a, b) => (Number(a.price) || Infinity) - (Number(b.price) || Infinity));
+  } else if (sortFilter.value === "rating") {
+    visible.sort((a, b) => ratingSummary(b.id).average - ratingSummary(a.id).average || ratingSummary(b.id).count - ratingSummary(a.id).count);
   } else {
     visible.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || a.name.localeCompare(b.name));
   }
@@ -118,8 +139,9 @@ function businessCard(business) {
       </div>
       <div class="card-body">
         <div class="card-title-row"><div><h3>${escapeHTML(business.name)}</h3><p class="location">⌖ ${escapeHTML(business.location)}</p></div><span class="price">${escapeHTML(formatPrice(business.price))}</span></div>
+        <div class="card-rating">${ratingMarkup(business.id)}</div>
         <p class="card-description">${escapeHTML(business.description)}</p>
-        <div class="card-footer"><span class="card-category">LOCAL BUSINESS</span>${contactAction}</div>
+        <div class="card-footer"><span class="card-category">${escapeHTML(business.category)}</span><button class="details-button" data-details="${escapeHTML(business.id)}">View details ↗</button></div><div class="card-contact">${contactAction}</div>
       </div>
     </article>`;
 }
@@ -133,6 +155,25 @@ function renderBusinesses() {
   favoritesToggle.setAttribute("aria-pressed", String(showFavoritesOnly));
   favoritesToggle.querySelector("span").textContent = showFavoritesOnly ? "Show all" : "Show saved";
 }
+
+function renderDetails(id) {
+  const business = businesses.find(item => item.id === id);
+  if (!business) return;
+  const summary = ratingSummary(id), list = getReviews(id), contact = contactURL(business.phone);
+  detailsContent.innerHTML = '<div class="details-hero" style="--card-bg:' + escapeHTML(business.color || "#e8eddc") + '"><button type="button" class="icon-button details-close" data-close-details aria-label="Close details">×</button><span class="category-chip">' + escapeHTML(business.category) + '</span><span class="details-emoji">' + escapeHTML(business.emoji || "🏪") + '</span></div><div class="details-main"><div class="eyebrow">LOCAL BUSINESS PROFILE</div><h2 id="details-title">' + escapeHTML(business.name) + '</h2><p class="details-location">⌖ ' + escapeHTML(business.location) + '</p><div class="details-rating">' + ratingMarkup(id) + '</div><p class="details-description">' + escapeHTML(business.description) + '</p><div class="details-facts"><div><span>Typical price</span><strong>' + escapeHTML(formatPrice(business.price)) + '</strong></div><div><span>Category</span><strong>' + escapeHTML(business.category) + '</strong></div></div>' + (contact ? '<a class="button button-dark details-contact" href="' + contact + '" target="_blank" rel="noopener noreferrer">Contact on WhatsApp ↗</a>' : '<p class="no-rating">No contact number provided.</p>') + '<section class="reviews-section"><div class="reviews-heading"><div><div class="eyebrow">COMMUNITY FEEDBACK</div><h3>Ratings & reviews</h3></div><span class="review-total">' + summary.count + ' reviews</span></div>' + (list.length ? list.slice().reverse().map(review => '<article class="review-item"><div class="review-top"><strong>' + escapeHTML(review.name || "Neighbour") + '</strong><span class="rating-stars">' + stars(Number(review.rating)) + '</span></div><p>' + escapeHTML(review.text) + '</p><span class="review-date">' + escapeHTML(review.date || "Community review") + '</span></article>').join("") : '<p class="no-reviews">No reviews yet. Be the first to share helpful feedback.</p>') + '<form id="review-form" class="review-form" data-review-business="' + escapeHTML(id) + '"><h4>Share your experience</h4><label>Your name<input name="reviewer" maxlength="45" required placeholder="e.g. A neighbour"></label><label>Rating<select name="rating" required><option value="">Choose a rating</option><option value="5">★★★★★ — Excellent</option><option value="4">★★★★ — Very good</option><option value="3">★★★ — Good</option><option value="2">★★ — Fair</option><option value="1">★ — Poor</option></select></label><label>Your review<textarea name="review" rows="3" maxlength="400" required placeholder="What should other neighbours know?"></textarea></label><p class="review-note">Demo only: reviews are saved in this browser, not shared or verified.</p><button class="button button-dark" type="submit">Submit review ↗</button></form></section></div>';
+  if (!detailsDialog.open) detailsDialog.showModal();
+}
+detailsContent.addEventListener("click", event => { if (event.target.closest("[data-close-details]")) detailsDialog.close(); });
+detailsDialog.addEventListener("click", event => { if (event.target === detailsDialog) detailsDialog.close(); });
+detailsContent.addEventListener("submit", event => {
+  if (!event.target.matches("#review-form")) return;
+  event.preventDefault(); const form = event.target, data = new FormData(form), id = form.dataset.reviewBusiness;
+  const name = String(data.get("reviewer") || "").trim(), text = String(data.get("review") || "").trim(), rating = Number(data.get("rating"));
+  if (!name || !text || !Number.isInteger(rating) || rating < 1 || rating > 5) { showToast("Please enter your name, a rating, and a review."); return; }
+  if (!Array.isArray(reviews[id])) reviews[id] = [];
+  reviews[id].push({id:"review-" + Date.now(), name, rating, text, date:new Date().toLocaleDateString("en-KE", {year:"numeric",month:"short",day:"numeric"})});
+  saveReviews(); renderBusinesses(); renderDetails(id); showToast("Thanks! Your demo review has been saved.");
+});
 
 function showToast(message) {
   toast.textContent = message;
@@ -195,7 +236,9 @@ form.addEventListener("submit", event => {
   saveListings();
   searchInput.value = "";
   categoryFilter.value = "all";
+  locationFilter.value = "";
   sortFilter.value = "featured";
+  ratingFilter.value = "0";
   showFavoritesOnly = false;
   renderBusinesses();
   closeListingDialog();
@@ -219,8 +262,11 @@ grid.addEventListener("click", event => {
 });
 
 searchInput.addEventListener("input", renderBusinesses);
+locationFilter.addEventListener("input", renderBusinesses);
+ratingFilter.addEventListener("change", renderBusinesses);
 categoryFilter.addEventListener("change", renderBusinesses);
 sortFilter.addEventListener("change", renderBusinesses);
+grid.addEventListener("click", event => { const button = event.target.closest("[data-details]"); if (button) renderDetails(button.dataset.details); });
 favoritesToggle.addEventListener("click", () => {
   showFavoritesOnly = !showFavoritesOnly;
   renderBusinesses();
@@ -228,12 +274,14 @@ favoritesToggle.addEventListener("click", () => {
 document.querySelector("#reset-filters").addEventListener("click", () => {
   searchInput.value = "";
   categoryFilter.value = "all";
+  locationFilter.value = "";
   sortFilter.value = "featured";
+  ratingFilter.value = "0";
   showFavoritesOnly = false;
   renderBusinesses();
 });
 document.addEventListener("keydown", event => {
-  if (event.key === "/" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) && !dialog.open) {
+  if (event.key === "/" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) && !dialog.open && !detailsDialog.open) {
     event.preventDefault();
     searchInput.focus();
   }
