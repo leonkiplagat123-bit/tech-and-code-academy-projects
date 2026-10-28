@@ -274,6 +274,7 @@ favoritesToggle.addEventListener("click", () => {
 document.querySelector("#reset-filters").addEventListener("click", () => {
   searchInput.value = "";
   categoryFilter.value = "all";
+  locationFilter.value = "";
   sortFilter.value = "featured";
   ratingFilter.value = "0";
   showFavoritesOnly = false;
