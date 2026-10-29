@@ -46,7 +46,7 @@ class StaticProjectTests(unittest.TestCase):
                 self.assertIn("<!doctype html>", html.lower())
                 parser = PageInspector()
                 parser.feed(html)
-                self.assertTrue(required_ids.issubset(parser.ids),
+                self.assertTrue(set(required_ids).issubset(parser.ids),
                                 f"Missing IDs: {required_ids - parser.ids}")
                 self.assertTrue(parser.scripts, "Expected an inline JavaScript app")
                 for script in parser.scripts:
