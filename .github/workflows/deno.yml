@@ -8,7 +8,9 @@
 
 name: Deno
 
-on:
+# Disabled: this repository does not use Deno.
+# To re-enable, restore the `on:` triggers and remove this comment.
+# on:
   push:
     branches: ["main"]
   pull_request:
