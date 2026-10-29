@@ -1,0 +1,34 @@
+name: Test Jirani Delivery
+
+on:
+  pull_request:
+    paths:
+      - "10-jirani-delivery/**"
+      - ".github/workflows/test-jirani-delivery.yml"
+  push:
+    branches: [main, feature/jirani-delivery-project-10]
+    paths:
+      - "10-jirani-delivery/**"
+      - ".github/workflows/test-jirani-delivery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 10-jirani-delivery
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run tests
+        run: python -m unittest discover -s tests -v

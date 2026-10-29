@@ -19,6 +19,9 @@ permissions:
 
 jobs:
   test:
+    # This repository currently has no Deno project/configuration. Skip this
+    # starter workflow unless a deno.json/deno.jsonc file is added.
+    if: ${{ hashFiles('deno.json', 'deno.jsonc', '**/deno.json', '**/deno.jsonc') != '' }}
     runs-on: ubuntu-latest
 
     steps:
