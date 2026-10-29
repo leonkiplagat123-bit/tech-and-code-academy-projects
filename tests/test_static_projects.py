@@ -47,7 +47,7 @@ class StaticProjectTests(unittest.TestCase):
                 parser = PageInspector()
                 parser.feed(html)
                 self.assertTrue(set(required_ids).issubset(parser.ids),
-                                f"Missing IDs: {required_ids - parser.ids}")
+                                f"Missing IDs: {set(required_ids) - parser.ids}")
                 self.assertTrue(parser.scripts, "Expected an inline JavaScript app")
                 for script in parser.scripts:
                     with tempfile.NamedTemporaryFile("w", suffix=".js", encoding="utf-8") as temp:
