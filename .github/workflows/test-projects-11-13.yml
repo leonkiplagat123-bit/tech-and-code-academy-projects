@@ -1,0 +1,39 @@
+name: Test Projects 11-13
+
+on:
+  pull_request:
+    paths:
+      - "11-smart-school-management/**"
+      - "12-mpesa-expense-savings-tracker/**"
+      - "13-kenya-jobs-attachment-portal/**"
+      - "tests/test_static_projects.py"
+      - ".github/workflows/test-projects-11-13.yml"
+  push:
+    branches: [main]
+    paths:
+      - "11-smart-school-management/**"
+      - "12-mpesa-expense-savings-tracker/**"
+      - "13-kenya-jobs-attachment-portal/**"
+      - "tests/test_static_projects.py"
+      - ".github/workflows/test-projects-11-13.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-project-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check project files and JavaScript syntax
+        run: python -m unittest discover -s tests -v
