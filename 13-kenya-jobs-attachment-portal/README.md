@@ -1,18 +1,39 @@
 # Project 13: Kenya Jobs & Attachment Portal
 
-A responsive job and industrial attachment discovery prototype with fictional sample listings.
+A responsive, front-end learning prototype for exploring fictional entry-level jobs, internships and industrial attachments across Kenya.
 
 ## Features
-- Search listings by title, company, skills and description.
-- Filter by location and opportunity type.
-- Save opportunities and record demo applications.
-- Responsive cards and browser localStorage persistence.
 
-## Run
-Open `index.html` in a modern browser.
+- Modern responsive layout with summary cards and accessible controls.
+- Search by job title, company, location, type, level, description and skills.
+- Filter by county/city location and opportunity type.
+- Sort opportunities by title or company.
+- Save and unsave opportunities, with a saved-only filter.
+- Open a details dialog with responsibilities, sample requirements and skills.
+- Record a clearly labelled demo application and track the count.
+- Persist saved opportunities and demo application IDs in browser localStorage.
+- Empty-state messaging, filter reset, keyboard-friendly dialogs and safe text escaping.
+
+## Run locally
+
+1. Open `index.html` in a modern browser.
+2. Search for a role or skill and try the location and opportunity-type filters.
+3. Save a role, enable “Show saved opportunities only”, and test the details and demo-application actions.
+
+No build tools, API keys or server are required.
+
+## Testing
+
+The repository's GitHub Actions workflow runs the static project test suite for Projects 11–13. It checks required page elements and parses embedded JavaScript with Node.js. This is not a full browser end-to-end test; manually test the interface at desktop and mobile widths as well.
+
+## Important limitations and privacy
+
+- All companies, vacancies, salaries and descriptions are fictional sample data.
+- “Apply” is a demonstration only. It stores the sample opportunity ID in this browser and does not contact an employer or submit a CV.
+- Saved items and demo applications are local to the current browser and device. They are not synced between users.
+- Do not enter real personal information into this learning demo.
+- A production recruitment platform would need verified employers and vacancies, secure server-side storage, authentication, privacy and retention controls, moderation, and secure application submission.
 
 ## Learning goals
-Search/filter logic, event listeners, array methods, state persistence, safe HTML escaping and responsive design.
 
-## Limitations
-All listings are fictional examples. Demo applications remain in your browser and are not sent to employers. A production portal needs verified listings, server-side storage, user accounts, privacy controls, moderation and secure application handling.
+Responsive interface design, accessible HTML, filtering and sorting arrays, event delegation, modal interactions, safe DOM rendering, localStorage persistence and progressive enhancement.
